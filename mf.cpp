@@ -538,6 +538,7 @@ FtrlLong FtrlProblem::precision_k(vector<FtrlFloat> &Z, const vector<Node*> &p, 
             valid_count++;
             Z[argmax] = MIN_Z;
         }
+        state++;
     }
 
     for (FtrlInt i = 1; i < int(topks.size()); i++) {
@@ -736,16 +737,15 @@ void FtrlProblem::cache_h(FtrlDouble *ht, FtrlDouble *hv_th) {
 
 void FtrlProblem::solve() {
     cout<<"Using "<<param->nr_threads<<" threads"<<endl;
-    init_va_loss(9);
-    vector<FtrlInt> topks(9,0);
-    topks[0] = 1; topks[1] = 2; topks[2] = 3;
-    topks[3] = 4; topks[4] = 5; topks[5] = 6;
-    topks[6] = 7; topks[7] = 8; topks[8] = 9;
+    init_va_loss(6);
+    vector<FtrlInt> topks(6,0);
+    topks[0] = 5; topks[1] = 10; topks[2] = 20;
+    topks[3] = 40; topks[4] = 80; topks[5] = 100;
     print_header_info(topks);
     update_R();
     for (t = 0; t < param->nr_pass; t++) {
         update_coordinates();
-        validate_ndcg(topks);
+        validate(topks);
         print_epoch_info();
         //if (t%3 == 2 && test_with_two_data) {
         //    validate_test(10);
